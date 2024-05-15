@@ -59,7 +59,9 @@ INSTALL_BASE := $(OPENRAM_HOME)/../technology/sky130
 INSTALL_DIRS := $(addprefix $(INSTALL_BASE)/,$(INSTALL_BASE_DIRS))
 
 # If conda is installed, we will use volare from there
-CONDA_DIR := $(wildcard $(TOP_DIR)/miniconda)
+# CONDA_DIR := $(wildcard $(TOP_DIR)/miniconda)
+# CONDA_DIR := /opt/homebrew/Caskroom/miniconda/base
+CONDA_DIR := 
 
 check-pdk-root:
 ifndef PDK_ROOT
@@ -103,12 +105,11 @@ sky130-install: $(SRAM_LIB_DIR)
 
 sky130-pdk: $(SKY130_PDKS_DIR)
 	@echo "Installing SKY130 via volare..."
+	@echo "CONDA_DIR='$(CONDA_DIR)'"
 ifeq ($(CONDA_DIR),)
 	volare enable --pdk sky130 $(SKY130_VOLARE)
 else
-	source $(TOP_DIR)/miniconda/bin/activate && \
-		volare enable --pdk sky130 $(SKY130_VOLARE) && \
-		conda deactivate
+	volare enable --pdk sky130 $(SKY130_VOLARE)
 endif
 .PHONY: sky130-pdk
 
